@@ -7,6 +7,7 @@ const getMessagesButtonLabel = () => $('#messages-tab .button-label');
 const getTasksButtonLabel = () => $('#tasks-tab .button-label');
 const contactsPage = require('../contacts/contacts.wdio.page');
 const modal = require('./modal.wdio.page');
+const tabContent = () => $('.inner');
 const _ = require('lodash');
 
 const navigateToLogoutModal = async () => {
@@ -48,6 +49,11 @@ const goToPeople = async () => {
   await (await contactsPage.contactList()).waitForDisplayed();
 };
 
+const goToTab = async (tab) => {
+  await browser.url(`/#/${tab}`);
+  await (await tabContent()).waitForDisplayed();
+};
+
 module.exports = {
   logout,
   logoutButton,
@@ -59,5 +65,6 @@ module.exports = {
   getReportsButtonLabel,
   getMessagesButtonLabel,
   getTasksButtonLabel,
-  goToBase
+  goToBase,
+  goToTab,
 };
