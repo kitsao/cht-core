@@ -8,7 +8,9 @@ const places = place.generateHierarchy();
 const healthCenter = places.find((place) => place.type === 'health_center');
 const clinic = places.find((place) => place.type === 'clinic');
 const analyticsPage = require('../../../page-objects/analytics/analytics.wdio.page');
+
 healthCenter.name = 'HC_' + Date.now();
+
 
 const contact = personFactory.build(
   {
@@ -34,6 +36,12 @@ describe('Aggregates', () => {
   before(async () => {
     await utils.deleteAllDocs();
     const settings = await utils.getSettings();
+    const permissions = settings.permissions;
+    for(const permission of Object.values(permissions)){
+      if(!permission.includes('chw_supervisor')){
+        permission.push('chw_supervisor');
+      }
+    }
     const targets = settings.tasks.targets.items;
 
     const counts = ['active-pregnancies', 'pregnancy-registrations-this-month', 'births-this-month'];
@@ -48,10 +56,10 @@ describe('Aggregates', () => {
       targets.find(target => target.id === item).goal = 100;
       targets.find(target => target.id === item).aggregate = true;
     }
-    await utils.updateSettings(settings, true);
+    await utils.updateSettings({targets: targets, permissions: permissions}, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await loginPage.cookieLogin();
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 60000);
   });
 
   after(async () => {
@@ -62,7 +70,12 @@ describe('Aggregates', () => {
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
+
   it('Supervisor Can view targets', async () => {
     await (await analyticsPage.analytics())[1].click();
+    const list = await (await analyticsPage.targetAggregatesList()());
+    console.log(list[1].getText());
   });
+  //['New pregnancies', 'Live births', 'Active pregnancies', 'In-facility deliveries']);
+
 });

@@ -4,6 +4,7 @@ const aggregates = () => $(`.mm-navigation-menu li a[href="#/analytics/target-ag
 const aggregateList = () => $('#target-aggregates-list');
 const pageDisabled = () => $('.page .item-content.disabled');
 const analytics = () => $$('ul.mm-navigation-menu li a span');
+const targetAggregatesList = () => $$('div.content div.heading h4 span');
 
 module.exports = {
   expectModulesToBeAvailable: async (modules) => {
@@ -24,5 +25,6 @@ module.exports = {
   targetNumber: (target) => target.$('.number'),
   targetGoal: (target) => target.$('.goal p'),
   targetTitle: (target) => target.$('.title h2'),
-  analytics
+  analytics,
+  targetAggregatesList
 };

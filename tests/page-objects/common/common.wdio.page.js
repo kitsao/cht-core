@@ -8,6 +8,7 @@ const getTasksButtonLabel = () => $('#tasks-tab .button-label');
 const contactsPage = require('../contacts/contacts.wdio.page');
 const modal = require('./modal.wdio.page');
 const tabContent = () => $('.inner');
+const loader = () => $('.loader');
 const _ = require('lodash');
 
 const navigateToLogoutModal = async () => {
@@ -30,7 +31,7 @@ const getLogoutMessage = async () => {
 
 const goToBase = async (timeoutForBaseLoadMillis) => {
   await browser.url('/');
-  
+
   let waitForDisplayedConfig = {};
   if (_.isNumber(timeoutForBaseLoadMillis)) {
     waitForDisplayedConfig = { timeout: timeoutForBaseLoadMillis };
@@ -54,6 +55,10 @@ const goToTab = async (tab) => {
   await (await tabContent()).waitForDisplayed();
 };
 
+const waitForLoaderToDisappear = async (timeout) => {
+  await (await loader()).waitForDisplayed({ timeout: timeout, reverse: true});
+};
+
 module.exports = {
   logout,
   logoutButton,
@@ -67,4 +72,5 @@ module.exports = {
   getTasksButtonLabel,
   goToBase,
   goToTab,
+  waitForLoaderToDisappear
 };
