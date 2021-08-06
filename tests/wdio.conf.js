@@ -66,7 +66,7 @@ const baseConfig = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     'goog:chromeOptions': {
-      args: [ '--disable-gpu']
+      args: ['--headless', '--disable-gpu']
     }
 
     // If outputDir is provided WebdriverIO can capture driver session logs
@@ -158,7 +158,7 @@ const baseConfig = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: 700000,
+    timeout: 700000, // login as offline takes forever ATM
   },
   //
   // =====
@@ -298,7 +298,7 @@ const baseConfig = {
     return new Promise((resolve, reject) => {
       const generationTimeout = setTimeout(
         () => reject(timeoutError),
-        600 * 1000);
+        600 * 1000);//offline login takes forever AT
 
       generation.on('exit', function (exitCode) {
         clearTimeout(generationTimeout);
