@@ -379,10 +379,10 @@ const waitForSettingsUpdateLogs = (type) => {
     );
   }
 
-  // return module.exports.waitForLogs(
-  //   'api.e2e.log',
-  //   /Settings updated/,
-  // );
+  return module.exports.waitForLogs(
+    'api.e2e.log',
+    /Settings updated/,
+  );
 };
 
 const apiRetry = () => {
@@ -884,7 +884,7 @@ module.exports = {
       timeout = setTimeout(() => {
         tail.unwatch();
         reject({ message: 'timeout exceeded' });
-      }, 600000);
+      }, 2000);
 
       tail.on('line', data => {
         if (regex.find(r => r.test(data))) {
