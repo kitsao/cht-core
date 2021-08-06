@@ -60,10 +60,6 @@ describe('Aggregates', () => {
     await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
-  after(async () => {
-    await utils.revertDb([], true);
-  });
-
   it('Supervisor Can view aggregates link', async () => {
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
