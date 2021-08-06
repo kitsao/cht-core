@@ -59,6 +59,11 @@ const waitForLoaderToDisappear = async (timeout) => {
   await (await loader()).waitForDisplayed({ timeout: timeout, reverse: true});
 };
 
+const getTextForElements = async (elements) => {
+  await waitForLoaderToDisappear();
+  return Promise.all((await elements()).map(filter => filter.getText()));
+};
+
 module.exports = {
   logout,
   logoutButton,
@@ -72,5 +77,6 @@ module.exports = {
   getTasksButtonLabel,
   goToBase,
   goToTab,
-  waitForLoaderToDisappear
+  waitForLoaderToDisappear,
+  getTextForElements
 };

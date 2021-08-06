@@ -30,8 +30,6 @@ const supervisor = userFactory.build(
     roles: ['chw_supervisor']
   });
 
-
-
 describe('Aggregates', () => {
   before(async () => {
     await utils.deleteAllDocs();
@@ -56,10 +54,10 @@ describe('Aggregates', () => {
       targets.find(target => target.id === item).goal = 100;
       targets.find(target => target.id === item).aggregate = true;
     }
-    await utils.updateSettings({targets: targets, permissions: permissions}, true);
+    await utils.updateSettings({ targets, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 60000);
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
   after(async () => {
@@ -71,11 +69,17 @@ describe('Aggregates', () => {
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
 
-  it('Supervisor Can view targets', async () => {
+  it('Supervisor Can view aggregate List', async () => {
     await (await analyticsPage.analytics())[1].click();
-    const list = await (await analyticsPage.targetAggregatesList()());
-    console.log(list[1].getText());
+    const aggregates = await commonPage.getTextForElements(analyticsPage.targetAggregatesItems);
+    expect(aggregates).toEqual(['New pregnancies', 'Live births', 'Active pregnancies', 'In-facility deliveries']);
   });
-  //['New pregnancies', 'Live births', 'Active pregnancies', 'In-facility deliveries']);
 
+  it('Supervisor Can view aggregate Details', async () => {
+    await (await analyticsPage.targetAggregatesItems())[0].click();
+    await commonPage.waitForLoaderToDisappear();
+    expect(await (await analyticsPage.aggregateHeading()).getText()).toBe('New pregnancies');
+    expect(await (await analyticsPage.aggregateLabel()).getText()).toBe('CHWs meeting goal');
+    expect(await (await analyticsPage.aggregateSummary()).getText()).toBe('0 of 0');
+  });
 });

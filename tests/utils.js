@@ -262,7 +262,7 @@ const revertDb = async (except, ignoreRefresh) => {
   const needsRefresh = await revertSettings();
   await deleteAll(except);
   await revertTranslations();
-  
+
   // only refresh if the settings were changed or modal was already present and we're not explicitly ignoring
   if (!ignoreRefresh && (needsRefresh || hasModal)) {
     watcher && watcher.cancel();
@@ -379,10 +379,10 @@ const waitForSettingsUpdateLogs = (type) => {
     );
   }
 
-  return module.exports.waitForLogs(
-    'api.e2e.log',
-    /Settings updated/,
-  );
+  // return module.exports.waitForLogs(
+  //   'api.e2e.log',
+  //   /Settings updated/,
+  // );
 };
 
 const apiRetry = () => {
@@ -884,7 +884,7 @@ module.exports = {
       timeout = setTimeout(() => {
         tail.unwatch();
         reject({ message: 'timeout exceeded' });
-      }, 2000);
+      }, 600000);
 
       tail.on('line', data => {
         if (regex.find(r => r.test(data))) {

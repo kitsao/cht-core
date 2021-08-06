@@ -28,7 +28,7 @@ const baseConfig = {
   // will be called from there.
   //
   specs: [
-    './tests/e2e/**/*.wdio-spec.js',
+    './tests/e2e/**/targets-aggregates.wdio-spec.js',
   ],
   // Patterns to exclude.
   exclude: [
@@ -66,7 +66,7 @@ const baseConfig = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     'goog:chromeOptions': {
-      args: ['--headless', '--disable-gpu']
+      args: [ '--disable-gpu']
     }
 
     // If outputDir is provided WebdriverIO can capture driver session logs
@@ -158,7 +158,7 @@ const baseConfig = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: 70000,
+    timeout: 700000,
   },
   //
   // =====
@@ -240,7 +240,10 @@ const baseConfig = {
    * Function to be executed after a test (in Mocha/Jasmine).
    */
   afterTest: async function (test, context, { passed }) {
+    await utils.revertDb([], true);
+
     if (passed === false) {
+      await console.log('test failed....', test.title);
       await browser.takeScreenshot();
     }
   },
@@ -295,7 +298,7 @@ const baseConfig = {
     return new Promise((resolve, reject) => {
       const generationTimeout = setTimeout(
         () => reject(timeoutError),
-        60 * 1000);
+        600 * 1000);
 
       generation.on('exit', function (exitCode) {
         clearTimeout(generationTimeout);

@@ -1,10 +1,14 @@
-
 const listModule = module => $(`.mm-navigation-menu li a[href="${module}"]`);
 const aggregates = () => $(`.mm-navigation-menu li a[href="#/analytics/target-aggregates"]`);
 const aggregateList = () => $('#target-aggregates-list');
 const pageDisabled = () => $('.page .item-content.disabled');
 const analytics = () => $$('ul.mm-navigation-menu li a span');
-const targetAggregatesList = () => $$('div.content div.heading h4 span');
+const targetAggregatesItems = () => $$(`.content .heading h4 span`);
+const meta = ('div.body.meta > div >');
+const aggregateHeading = () => $(`${meta} div.row.heading > div.heading-content > h2`);
+const aggregateLabel = () => $(`${meta} div.cell > label`);
+const aggregateSummary = () => $(`${meta} div.cell > p`);
+
 
 module.exports = {
   expectModulesToBeAvailable: async (modules) => {
@@ -26,5 +30,8 @@ module.exports = {
   targetGoal: (target) => target.$('.goal p'),
   targetTitle: (target) => target.$('.title h2'),
   analytics,
-  targetAggregatesList
+  targetAggregatesItems,
+  aggregateSummary,
+  aggregateLabel,
+  aggregateHeading
 };
