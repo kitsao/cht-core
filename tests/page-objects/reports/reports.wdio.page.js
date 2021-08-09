@@ -8,8 +8,8 @@ const submitterName = () => $('.sender .name');
 const firstReport = () => $(`${reportListID} li:first-child`);
 const reportList = () => $(`${reportListID}`);
 const submitReportButton = () => $('.action-container .general-actions:not(.ng-hide) .fa-plus');
-const formLinkByHref = (href) => {
-  return $(`.action-container .general-actions .dropup.open .dropdown-menu li a[href="#/reports/add/${href}"]`);
+const formActionsLink = (formId) => {
+  return $(`.action-container .general-actions .dropup.open .dropdown-menu li a[href="#/reports/add/${formId}"]`);
 };
 
 module.exports = {
@@ -21,5 +21,5 @@ module.exports = {
   selectedCaseId,
   selectedCaseIdLabel,
   submitReportButton,
-  formLinkByHref,
+  formActionsLink,
 };
