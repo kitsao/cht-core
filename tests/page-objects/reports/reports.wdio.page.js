@@ -11,6 +11,8 @@ const submitReportButton = () => $('.action-container .general-actions:not(.ng-h
 const formActionsLink = (formId) => {
   return $(`.action-container .general-actions .dropup.open .dropdown-menu li a[href="#/reports/add/${formId}"]`);
 };
+const addRepeatButton = () => $('.btn.btn-default.add-repeat-btn');
+const repeatForm = async () => (await addRepeatButton()).click();
 
 module.exports = {
   reportList,
@@ -22,4 +24,6 @@ module.exports = {
   selectedCaseIdLabel,
   submitReportButton,
   formActionsLink,
+  addRepeatButton,
+  repeatForm,
 };
