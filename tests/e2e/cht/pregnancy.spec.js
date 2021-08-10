@@ -53,6 +53,7 @@ describe('Pregnancy workflow on cht : ', () => {
     await utils.createUsers([offlineUser]);
   });
 
+  //TODO: flaky test - to fix
   xit('should register a pregnancy', async () => {
     await commonElements.goToLoginPageNative();
     await loginPage.loginNative(offlineUser.username, offlineUser.password);
