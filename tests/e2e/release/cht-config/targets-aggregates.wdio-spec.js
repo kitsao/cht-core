@@ -65,7 +65,6 @@ describe('Aggregates', () => {
   });
 
   it('Supervisor Can view aggregates link', async () => {
-    const set = await utils.getSettings();
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
