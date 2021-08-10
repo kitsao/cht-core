@@ -40,27 +40,29 @@ describe('Aggregates', () => {
         permission.push('chw_supervisor');
       }
     }
-    const targets = settings.tasks.targets.items;
+    const tasks = settings.tasks;
 
     const counts = ['active-pregnancies', 'pregnancy-registrations-this-month', 'births-this-month'];
     const percents = ['facility-deliveries'];
     for (const item of counts) {
-      targets.find(target => target.id === item).aggregate = true;
-      targets.find(target => target.id === item).type = 'count';
-      targets.find(target => target.id === item).goal = 4;
+      tasks.targets.items.find(target => target.id === item).aggregate = true;
+      tasks.targets.items.find(target => target.id === item).type = 'count';
+      tasks.targets.items.find(target => target.id === item).goal = 4;
     }
     for (const item of percents) {
-      targets.find(target => target.id === item).type = 'percent';
-      targets.find(target => target.id === item).goal = 100;
-      targets.find(target => target.id === item).aggregate = true;
+      tasks.targets.items.find(target => target.id === item).type = 'percent';
+      tasks.targets.items.find(target => target.id === item).goal = 100;
+      tasks.targets.items.find(target => target.id === item).aggregate = true;
     }
-    await utils.updateSettings({ targets, permissions }, true);
+    await utils.updateSettings({ tasks, permissions }, true).then(res => console.log(res));
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
     await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
   it('Supervisor Can view aggregates link', async () => {
+    const set = await utils.getSettings();
+    console.log(set.tasks.targets.items);
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
