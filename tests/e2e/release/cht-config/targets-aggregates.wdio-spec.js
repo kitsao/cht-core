@@ -32,7 +32,6 @@ const supervisor = userFactory.build(
 
 describe('Aggregates', () => {
   before(async () => {
-    await utils.deleteAllDocs();
     const settings = await utils.getSettings();
     const permissions = settings.permissions;
     for(const permission of Object.values(permissions)){
@@ -54,15 +53,19 @@ describe('Aggregates', () => {
       tasks.targets.items.find(target => target.id === item).goal = 100;
       tasks.targets.items.find(target => target.id === item).aggregate = true;
     }
-    await utils.updateSettings({ tasks, permissions }, true).then(res => console.log(res));
+    await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
     await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
+  after(async () => {
+    await utils.deleteAllDocs();
+    await utils.revertDb([], true);
+  });
+
   it('Supervisor Can view aggregates link', async () => {
     const set = await utils.getSettings();
-    console.log(set.tasks.targets.items);
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
