@@ -80,14 +80,13 @@ describe('Aggregates', () => {
 
   it('Supervisor Can view aggregate List', async () => {
     await (await analyticsPage.analytics())[1].click();
-    await (await analyticsPage.analytics())[1].waitForDisplayed({reverse: true});
     const aggregates = await commonPage.getTextForElements(analyticsPage.targetAggregatesItems);
     expect(aggregates).toEqual(['New pregnancies', 'Live births', 'Active pregnancies', 'In-facility deliveries']);
   });
 
   it('Supervisor Can view aggregate Details', async () => {
     await (await analyticsPage.targetAggregatesItems())[0].click();
-    await commonPage.waitForLoaderToDisappear();
+    //await commonPage.waitForLoaderToDisappear();
     expect(await (await analyticsPage.aggregateHeading()).getText()).toBe('New pregnancies');
     expect(await (await analyticsPage.aggregateLabel()).getText()).toBe('CHWs meeting goal');
     expect(await (await analyticsPage.aggregateSummary()).getText()).toBe('0 of 0');
