@@ -11,9 +11,7 @@ const analyticsPage = require('../../../page-objects/analytics/analytics.wdio.pa
 
 healthCenter.name = 'HC_' + Date.now();
 
-
-const contact = personFactory.build(
-  {
+const contact = personFactory.build({
     name: 'contact_' + Date.now(),
     parent: {
       _id: clinic._id,
@@ -22,8 +20,7 @@ const contact = personFactory.build(
     phone: '+254712345670'
   });
 
-const supervisor = userFactory.build(
-  {
+const supervisor = userFactory.build({
     username: 'supervisor' + Date.now(),
     place: clinic._id,
     contact: contact,
@@ -41,7 +38,7 @@ describe('Aggregates', () => {
     }
     const tasks = settings.tasks;
 
-    const counts = ['active-pregnancies', 'pregnancy-registrations-this-month', 'births-this-month', 'deaths-this-month'];
+    const counts = ['active-pregnancies', 'pregnancy-registrations-this-month', 'births-this-month'];
     const percents = ['facility-deliveries'];
     for (const item of counts) {
       tasks.targets.items.find(target => target.id === item).aggregate = true;
@@ -56,7 +53,7 @@ describe('Aggregates', () => {
     await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    // await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 300000);
   });
 
   after(async () => {
@@ -64,9 +61,9 @@ describe('Aggregates', () => {
     await utils.revertDb([], true);
   });
 
-  it('login as an supervisor', async () => {
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 300000);
-  });
+  // it('login as an supervisor', async () => {
+  //   await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 300000);
+  // });
 
   it('Supervisor Can view aggregates link', async () => {
     await commonPage.goToTab('analytics');
