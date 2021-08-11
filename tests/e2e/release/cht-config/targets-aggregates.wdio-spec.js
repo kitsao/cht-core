@@ -80,6 +80,7 @@ describe('Aggregates', () => {
 
   it('Supervisor Can view aggregate List', async () => {
     await (await analyticsPage.analytics())[1].click();
+    await (await analyticsPage.analytics())[1].waitForDisplayed({reverse: true});
     const aggregates = await commonPage.getTextForElements(analyticsPage.targetAggregatesItems);
     expect(aggregates).toEqual(['New pregnancies', 'Live births', 'Active pregnancies', 'In-facility deliveries']);
   });
