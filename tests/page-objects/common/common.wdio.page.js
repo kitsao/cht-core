@@ -31,7 +31,7 @@ const getLogoutMessage = async () => {
 
 const goToBase = async (timeoutForBaseLoadMillis) => {
   await browser.url('/');
-
+  
   let waitForDisplayedConfig = {};
   if (_.isNumber(timeoutForBaseLoadMillis)) {
     waitForDisplayedConfig = { timeout: timeoutForBaseLoadMillis };
