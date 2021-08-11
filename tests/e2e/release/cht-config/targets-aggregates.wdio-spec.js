@@ -9,6 +9,7 @@ const healthCenter = places.find((place) => place.type === 'health_center');
 const clinic = places.find((place) => place.type === 'clinic');
 const analyticsPage = require('../../../page-objects/analytics/analytics.wdio.page');
 
+
 healthCenter.name = 'HC_' + Date.now();
 
 const contact = personFactory.build({
@@ -64,7 +65,9 @@ describe('Aggregates', () => {
   });
 
   it('login as an supervisor', async () => {
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
+    await loginPage.login(supervisor.username, supervisor.password);
+    await (await commonPage.analyticsTab()).waitForDisplayed({timeout:600000});
+  await (await commonPage.messagesTab()).waitForDisplayed();
   });
 
   it('Supervisor Can view aggregates link', async () => {
