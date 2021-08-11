@@ -41,7 +41,7 @@ describe('Aggregates', () => {
     }
     const tasks = settings.tasks;
 
-    const counts = ['active-pregnancies', 'pregnancy-registrations-this-month', 'births-this-month'];
+    const counts = ['active-pregnancies', 'pregnancy-registrations-this-month', 'births-this-month', 'deaths-this-month'];
     const percents = ['facility-deliveries'];
     for (const item of counts) {
       tasks.targets.items.find(target => target.id === item).aggregate = true;
@@ -65,7 +65,7 @@ describe('Aggregates', () => {
   });
 
   it('login as an supervisor', async () => {
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 100000);
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 300000);
   });
 
   it('Supervisor Can view aggregates link', async () => {
