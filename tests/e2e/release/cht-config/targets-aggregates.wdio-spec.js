@@ -67,7 +67,7 @@ describe('Aggregates', () => {
   it('login as an supervisor', async () => {
     await loginPage.login(supervisor.username, supervisor.password);
     await (await commonPage.analyticsTab()).waitForDisplayed({timeout:600000});
-  await (await commonPage.messagesTab()).waitForDisplayed();
+    await (await commonPage.messagesTab()).waitForDisplayed();
   });
 
   it('Supervisor Can view aggregates link', async () => {
