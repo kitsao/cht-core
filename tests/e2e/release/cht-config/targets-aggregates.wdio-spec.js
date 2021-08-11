@@ -65,7 +65,10 @@ describe('Aggregates', () => {
   });
 
   it('login as an supervisor', async () => {
+    await browser.deleteCookies();
     await loginPage.login(supervisor.username, supervisor.password);
+    await browser.pause(2000);
+    await browser.refresh();
     await (await commonPage.analyticsTab()).waitForDisplayed({timeout:600000});
     await (await commonPage.messagesTab()).waitForDisplayed();
   });
