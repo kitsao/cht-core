@@ -53,7 +53,9 @@ describe('Aggregates', () => {
     await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
+    await browser.deleteCookies();
+    await browser.refresh();
+    //await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
   after(async () => {
@@ -61,9 +63,9 @@ describe('Aggregates', () => {
     await utils.revertDb([], true);
   });
 
-  // it('login as an supervisor', async () => {
-  //   await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 300000);
-  // });
+  it('login as an supervisor', async () => {
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
+  });
 
   it('Supervisor Can view aggregates link', async () => {
     await commonPage.goToTab('analytics');
