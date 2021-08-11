@@ -12,20 +12,20 @@ const analyticsPage = require('../../../page-objects/analytics/analytics.wdio.pa
 healthCenter.name = 'HC_' + Date.now();
 
 const contact = personFactory.build({
-    name: 'contact_' + Date.now(),
-    parent: {
-      _id: clinic._id,
-      parent: clinic.parent
-    },
-    phone: '+254712345670'
-  });
+  name: 'contact_' + Date.now(),
+  parent: {
+    _id: clinic._id,
+    parent: clinic.parent
+  },
+  phone: '+254712345670'
+});
 
 const supervisor = userFactory.build({
-    username: 'supervisor' + Date.now(),
-    place: clinic._id,
-    contact: contact,
-    roles: ['chw_supervisor']
-  });
+  username: 'supervisor' + Date.now(),
+  place: clinic._id,
+  contact: contact,
+  roles: ['chw_supervisor']
+});
 
 describe('Aggregates', () => {
   before(async () => {
