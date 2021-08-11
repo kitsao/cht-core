@@ -53,7 +53,7 @@ describe('Aggregates', () => {
     await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 300000);
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
   after(async () => {
