@@ -56,12 +56,16 @@ describe('Aggregates', () => {
     await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
+    // await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
   after(async () => {
     await utils.deleteAllDocs();
     await utils.revertDb([], true);
+  });
+
+  it('login as an supervisor', async () => {
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 100000);
   });
 
   it('Supervisor Can view aggregates link', async () => {
