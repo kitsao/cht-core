@@ -8,7 +8,6 @@ const places = place.generateHierarchy();
 const healthCenter = places.find((place) => place.type === 'health_center');
 const clinic = places.find((place) => place.type === 'clinic');
 const analyticsPage = require('../../../page-objects/analytics/analytics.wdio.page');
-const auth = require('../../../auth')();
 
 healthCenter.name = 'HC_' + Date.now();
 
@@ -63,7 +62,7 @@ describe('Aggregates', () => {
     await utils.deleteAllDocs();
     await utils.revertDb([], true);
   });
-  
+
   it('Supervisor Can view aggregates link', async () => {
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
