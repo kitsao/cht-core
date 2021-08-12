@@ -55,21 +55,16 @@ describe('Aggregates', () => {
     await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await loginPage.cookieLogin(auth.username, auth.password, false, 600000);
+    //TODO: to adjust once the race condition issue is fixed
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 1200000);
   });
 
   after(async () => {
     await utils.deleteAllDocs();
     await utils.revertDb([], true);
   });
-
-  it('login as an supervisor', async () => {
-    await browser.deleteCookies();
-    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
-  });
-
+  
   it('Supervisor Can view aggregates link', async () => {
-    console.log(await utils.request({ path: '/api/v1/users' }));
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
