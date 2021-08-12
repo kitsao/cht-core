@@ -158,7 +158,7 @@ const baseConfig = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: 700000, // login as offline takes forever ATM
+    timeout: 1200000, // login as offline takes forever ATM
   },
   //
   // =====
