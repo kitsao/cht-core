@@ -8,7 +8,7 @@ const places = place.generateHierarchy();
 const healthCenter = places.find((place) => place.type === 'health_center');
 const clinic = places.find((place) => place.type === 'clinic');
 const analyticsPage = require('../../../page-objects/analytics/analytics.wdio.page');
-
+const auth = require('../../../auth')();
 
 healthCenter.name = 'HC_' + Date.now();
 
@@ -29,6 +29,7 @@ const supervisor = userFactory.build({
 });
 
 describe('Aggregates', () => {
+
   before(async () => {
     const settings = await utils.getSettings();
     const permissions = settings.permissions;
@@ -54,9 +55,7 @@ describe('Aggregates', () => {
     await utils.updateSettings({ tasks, permissions }, true);
     await utils.saveDocs([clinic]);
     await utils.createUsers([supervisor]);
-    await browser.deleteCookies();
-    await browser.refresh();
-    //await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
+    await loginPage.cookieLogin(auth.username, auth.password, false, 600000);
   });
 
   after(async () => {
@@ -66,14 +65,11 @@ describe('Aggregates', () => {
 
   it('login as an supervisor', async () => {
     await browser.deleteCookies();
-    await loginPage.login(supervisor.username, supervisor.password);
-    await browser.pause(2000);
-    await browser.refresh();
-    await (await commonPage.analyticsTab()).waitForDisplayed({timeout:600000});
-    await (await commonPage.messagesTab()).waitForDisplayed();
+    await loginPage.cookieLogin(supervisor.username, supervisor.password, false, 600000);
   });
 
   it('Supervisor Can view aggregates link', async () => {
+    console.log(await utils.request({ path: '/api/v1/users' }));
     await commonPage.goToTab('analytics');
     expect(await (await analyticsPage.analytics())[1].getText()).toBe('Target aggregates');
   });
@@ -86,7 +82,6 @@ describe('Aggregates', () => {
 
   it('Supervisor Can view aggregate Details', async () => {
     await (await analyticsPage.targetAggregatesItems())[0].click();
-    //await commonPage.waitForLoaderToDisappear();
     expect(await (await analyticsPage.aggregateHeading()).getText()).toBe('New pregnancies');
     expect(await (await analyticsPage.aggregateLabel()).getText()).toBe('CHWs meeting goal');
     expect(await (await analyticsPage.aggregateSummary()).getText()).toBe('0 of 0');
