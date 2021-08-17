@@ -565,7 +565,7 @@ describe('RulesEngineService', () => {
 
   it('should record correct telemetry data with emitted events', async () => {
     const realSetTimeout = setTimeout;
-    const nextTick = () => new Promise(resolve => realSetTimeout(() => resolve()));
+    const nextTick = () => new Promise<void>(resolve => realSetTimeout(() => resolve()));
     clock = sinon.useFakeTimers(1000);
     let fetchTargetResultPromise;
     const fetchTasksResultPromise = [];
@@ -630,7 +630,7 @@ describe('RulesEngineService', () => {
   it('should record correct telemetry data for disabled actions', async () => {
     authService.has.withArgs('can_view_tasks').resolves(false);
     const realSetTimeout = setTimeout;
-    const nextTick = () => new Promise(resolve => realSetTimeout(() => resolve()));
+    const nextTick = () => new Promise<void>(resolve => realSetTimeout(() => resolve()));
     clock = sinon.useFakeTimers(1000);
     fetchTargetsResult = sinon.stub().resolves([]);
     fetchTasksResult = sinon.stub().resolves([]);
