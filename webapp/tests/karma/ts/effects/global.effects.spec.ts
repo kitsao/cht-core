@@ -1,5 +1,5 @@
 import { provideMockActions } from '@ngrx/effects/testing';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
 import { expect } from 'chai';
@@ -22,7 +22,7 @@ describe('GlobalEffects', () => {
   let store;
   let router;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     actions$ = new Observable<Action>();
     const mockedSelectors = [
       { selector: Selectors.getEnketoSavingStatus, value: false },
@@ -62,7 +62,7 @@ describe('GlobalEffects', () => {
   });
 
   describe('deleteDocConfirm', () => {
-    it('should not be triggered by random actions', async (() => {
+    it('should not be triggered by random actions', waitForAsync (() => {
       actions$ = of([
         GlobalActionsList.setLoadingContent(true),
         GlobalActionsList.clearSelected(),
@@ -72,7 +72,7 @@ describe('GlobalEffects', () => {
       expect(modalService.show.callCount).to.equal(0);
     }));
 
-    it('should open modal with payload', async (() => {
+    it('should open modal with payload', waitForAsync (() => {
       const doc = { _id: 'some_doc' };
       actions$ = of(GlobalActionsList.deleteDocConfirm(doc));
       effects.deleteDocConfirm$.subscribe();
@@ -85,7 +85,7 @@ describe('GlobalEffects', () => {
   });
 
   describe('navigationCancel', () => {
-    it('when saving, do nothing', async(() => {
+    it('when saving, do nothing', waitForAsync(() => {
       const callback = sinon.stub();
       store.overrideSelector(Selectors.getEnketoSavingStatus, true);
       store.overrideSelector(Selectors.getCancelCallback, callback);
@@ -97,7 +97,7 @@ describe('GlobalEffects', () => {
       expect(router.navigate.callCount).to.equal(0);
     }));
 
-    it('when not saving and not edited and no cancelCallback', async(async () => {
+    it('when not saving and not edited and no cancelCallback', waitForAsync(async () => {
       actions$ = of(GlobalActionsList.navigationCancel('next'));
       effects.navigationCancel.subscribe();
       expect(modalService.show.callCount).to.equal(0);
@@ -105,7 +105,7 @@ describe('GlobalEffects', () => {
       expect(router.navigate.callCount).to.equal(0);
     }));
 
-    it('when not saving edited and no cancel callback and no route', async (async () => {
+    it('when not saving edited and no cancel callback and no route', waitForAsync (async () => {
       store.overrideSelector(Selectors.getEnketoEditedStatus, true);
       actions$ = of(GlobalActionsList.navigationCancel(''));
       effects.navigationCancel.subscribe();
@@ -116,7 +116,7 @@ describe('GlobalEffects', () => {
       expect(router.navigate.callCount).to.equal(0);
     }));
 
-    it('when not saving edited and no cancel callback and route', async (async () => {
+    it('when not saving edited and no cancel callback and route', waitForAsync (async () => {
       store.overrideSelector(Selectors.getEnketoEditedStatus, true);
       actions$ = of(GlobalActionsList.navigationCancel('next'));
       effects.navigationCancel.subscribe();
@@ -128,7 +128,7 @@ describe('GlobalEffects', () => {
       expect(router.navigate.args[0]).to.deep.equal([['next']]);
     }));
 
-    it('when not saving edited and cancel callback but user cancels modal', async (async () => {
+    it('when not saving edited and cancel callback but user cancels modal', waitForAsync (async () => {
       const cancelCallback = sinon.stub();
       modalService.show.rejects({ means: 'that user cancelled' });
       store.overrideSelector(Selectors.getCancelCallback, cancelCallback);
@@ -143,7 +143,7 @@ describe('GlobalEffects', () => {
       expect(cancelCallback.callCount).to.equal(0);
     }));
 
-    it('when not saving, not edited and cancelCallback ', async(async () => {
+    it('when not saving, not edited and cancelCallback ', waitForAsync(async () => {
       const cancelCallback = sinon.stub();
       store.overrideSelector(Selectors.getCancelCallback, cancelCallback);
       actions$ = of(GlobalActionsList.navigationCancel('next'));
