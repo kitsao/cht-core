@@ -3,11 +3,11 @@
     "new phone_owner contact creates rapidpro contact": {
       "relevant_to": "doc.contact_type === 'phone_owner'",
       "destination": {
-        "base_url": "https://rapidpro.app.medicmobile.org",
+        "base_url": "{{base_url}}",
         "auth": {
           "type": "header",
           "name": "Authorization",
-          "value_key": "rapidpro.app"
+          "value_key": "{{value_key}}"
         },
         "path": "/api/v2/contacts.json"
       },
@@ -59,11 +59,11 @@
     "report triggers patient-state-change workflow": {
       "relevant_to": "doc.type === 'data_record' && doc.fields && doc.fields.rapidpro",
       "destination": {
-        "base_url": "https://rapidpro.app.medicmobile.org",
+        "base_url": "{{base_url}}",
         "auth": {
           "type": "header",
           "name": "Authorization",
-          "value_key": "rapidpro.app"
+          "value_key": "{{value_key}}"
         },
         "path": "/api/v2/flow_starts.json"
       },
@@ -99,11 +99,11 @@
     "patient triggers patient-state-change workflow": {
       "relevant_to": "doc.type === 'person' && doc.rapidpro",
       "destination": {
-        "base_url": "https://rapidpro.app.medicmobile.org",
+        "base_url": "{{base_url}}",
         "auth": {
           "type": "header",
           "name": "Authorization",
-          "value_key": "rapidpro.app"
+          "value_key": "{{value_key}}"
         },
         "path": "/api/v2/flow_starts.json"
       },
